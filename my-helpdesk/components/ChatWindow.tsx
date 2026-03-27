@@ -2,42 +2,27 @@
 
 import { useState } from "react";
 import { Send, Bot, User } from "lucide-react";
-
-type Message = {
-  id: string;
-  role: "user" | "ai";
-  content: string;
-};
-
-const INITIAL_MESSAGES: Message[] = [
-  {
-    id: "1",
-    role: "ai",
-    content: "Hello, I am an AI Help Desk Assistant blah blah blah blah...",
-  },
-];
+import { useChat, type UIMessage } from "@ai-sdk/react";
 
 export function ChatWindow() {
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
+  const { messages, sendMessage, status } = useChat({
+    messages: [
+      {
+        id: "1",
+        role: "assistant",
+        parts: [{ type: "text", text: "Hello, I am your helpful AI Help Desk Assistant. How can I assist you today?" }],
+      },
+    ] as any,
+  });
+
+  const isLoading = status === 'submitted' || status === 'streaming';
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMsg: Message = { id: Date.now().toString(), role: "user", content: input };
-    setMessages((prev) => [...prev, userMsg]);
+    if (!input.trim() || isLoading) return;
+    sendMessage({ text: input });
     setInput("");
-
-    // Mock AI response
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "ai",
-        content: "I've received your query. (This is a mocked response, in the future will query AWS architecture to provide an answer)",
-      };
-      setMessages((prev) => [...prev, aiResponse]);
-    }, 1000);
   };
 
   return (
@@ -53,7 +38,7 @@ export function ChatWindow() {
 
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-950/50">
-        {messages.map((m) => (
+        {messages.map((m: UIMessage) => (
           <div
             key={m.id}
             className={`flex gap-4 ${m.role === "user" ? "flex-row-reverse" : "flex-row"}`}
@@ -72,7 +57,7 @@ export function ChatWindow() {
                   : "bg-gray-800 text-gray-200 border border-gray-700 rounded-tl-sm ring-1 ring-gray-900/50"
               }`}
             >
-              {m.content}
+              {m.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
             </div>
           </div>
         ))}
@@ -90,7 +75,7 @@ export function ChatWindow() {
           />
           <button
             type="submit"
-            disabled={!input.trim()}
+            disabled={!input.trim() || isLoading}
             className="absolute right-2 p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:hover:bg-indigo-600 transition-colors"
           >
             <Send size={18} />
