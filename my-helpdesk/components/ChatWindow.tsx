@@ -11,7 +11,7 @@ export function ChatWindow() {
       {
         id: "1",
         role: "assistant",
-        parts: [{ type: "text", text: "Hello, I am your helpful AI Help Desk Assistant. How can I assist you today?" }],
+        parts: [{ type: "text", text: "Hello, I am your AI Help Desk Assistant. How may I assist you today?" }],
       },
     ] as any,
   });

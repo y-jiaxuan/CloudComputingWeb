@@ -21,9 +21,9 @@ export function TicketList() {
         <div>
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
             <Ticket className="w-6 h-6 text-indigo-100" />
-            My Tickets
+            My Tickets (CURRENTLY A MOCK LIST. Check MOCK_TICKETS list.)
           </h2>
-          <p className="text-indigo-100 text-sm mt-1">Track the status of your database support requests.</p>
+          <p className="text-indigo-100 text-sm mt-1">Tracks the tickets of user and AI chats.</p>
         </div>
         <button className="bg-gray-800 text-indigo-400 px-4 py-2 font-medium rounded-lg shadow-sm hover:bg-gray-700 transition-colors border border-gray-700">
           New Ticket
