@@ -32,12 +32,13 @@ Ensure the following are installed and configured before running the project loc
 
 ## Getting Started
 
-### 1. Install dependencies
+### 1. Install dependencies & Setup Database
 
 Go to the project root and execute:  
 
 ```bash
 npm install
+npx prisma generate
 ```
 
 ### 2. Configure environment variables
