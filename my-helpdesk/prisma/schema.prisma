@@ -1,0 +1,15 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Ticket {
+  id         Int      @id @default(autoincrement())
+  subject    String
+  status     String   @default("Open")
+  created_at DateTime @default(now())
+}
