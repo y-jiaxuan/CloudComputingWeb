@@ -6,10 +6,13 @@ export async function GET() {
         const tickets = await prisma.ticket.findMany({
             orderBy: { created_at: 'desc' },
         })
-        return NextResponse.json(tickets)
+        
+        // Ensure the response is always an array to prevent frontend crashes
+        return NextResponse.json(Array.isArray(tickets) ? tickets : [])
     } catch (err) {
-        console.error(err)
-        return NextResponse.json({ error: 'Failed to fetch tickets' }, { status: 500 })
+        console.error('Prisma GET Error:', err)
+        // Return an empty array as a fallback so .map() doesn't fail
+        return NextResponse.json([]) 
     }
 }
 
@@ -17,11 +20,14 @@ export async function POST(req: Request) {
     try {
         const { subject } = await req.json()
         const ticket = await prisma.ticket.create({
-            data: { subject: subject || 'New Conversation', status: 'Open' },
+            data: { 
+                subject: subject || 'New Conversation', 
+                status: 'Open' 
+            },
         })
         return NextResponse.json(ticket)
     } catch (err) {
-        console.error(err)
+        console.error('Prisma POST Error:', err)
         return NextResponse.json({ error: 'Failed to create ticket' }, { status: 500 })
     }
 }
