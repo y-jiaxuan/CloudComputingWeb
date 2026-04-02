@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\my-helpdesk",
+    "\\my-helpdesk\\app",
+    "\\my-helpdesk\\app\\api",
+    "\\my-helpdesk\\app\\api\\chat",
+    "\\my-helpdesk\\app\\api\\tickets",
+    "\\my-helpdesk\\app\\api\\tickets\\[id]",
+    "\\my-helpdesk\\components"
+  ],
+  "SelectedNode": "\\my-helpdesk\\app\\api\\chat\\route.ts",
+  "PreviewInSolutionExplorer": false
+}

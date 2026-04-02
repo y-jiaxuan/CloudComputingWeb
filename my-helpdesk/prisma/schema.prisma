@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,8 +7,18 @@ datasource db {
 }
 
 model Ticket {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   subject    String
-  status     String   @default("Open")
+  status     String    @default("Open")
+  created_at DateTime  @default(now())
+  messages   Message[]
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  ticket_id  Int
+  role       String
+  content    String
   created_at DateTime @default(now())
+  ticket     Ticket   @relation(fields: [ticket_id], references: [id])
 }
