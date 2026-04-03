@@ -4,7 +4,10 @@ import { NextResponse } from 'next/server'
 export async function GET() {
     try {
         const tickets = await prisma.ticket.findMany({
-            orderBy: { created_at: 'desc' },
+            orderBy: [
+                { status: 'asc' },
+                { created_at: 'desc' },
+            ],
         })
         
         // Ensure the response is always an array to prevent frontend crashes

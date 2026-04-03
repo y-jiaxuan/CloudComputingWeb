@@ -3,10 +3,13 @@ import { NextResponse } from 'next/server'
 
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+
+  const { id } = await context.params
+
   const messages = await prisma.message.findMany({
-    where: { ticket_id: Number(params.id) },
+    where: { ticket_id: Number(id) },
     orderBy: { created_at: 'asc' },
   })
   return NextResponse.json(messages)
@@ -14,12 +17,13 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params
   const { role, content } = await req.json()
   const message = await prisma.message.create({
     data: {
-      ticket_id: Number(params.id),
+      ticket_id: Number(id),
       role,
       content,
     },

@@ -14,17 +14,34 @@ export function TicketList() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState<"All" | "Open" | "Resolved">("All");
-    const [newSubject, setNewSubject] = useState("");
+    const [updatingId, setUpdatingId] = useState<number | null>(null);
+    //const [newSubject, setNewSubject] = useState("");
+
+    async function loadTickets() {
+        try {
+            const res = await fetch("/api/tickets");
+            const data = await res.json();
+            setTickets(Array.isArray(data) ? data : []);
+        } catch {
+            setTickets([]);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        fetch('/api/tickets')
-            .then(r => r.json())
-            .then(data => {
-                setTickets(data);
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
+        loadTickets();
     }, []);
+
+    // useEffect(() => {
+    //     fetch('/api/tickets')
+    //         .then(r => r.json())
+    //         .then(data => {
+    //             setTickets(data);
+    //             setLoading(false);
+    //         })
+    //         .catch(() => setLoading(false));
+    // }, []);
 
     const filteredTickets = tickets.filter((ticket) => {
         const matchesSearch = ticket.subject
@@ -50,10 +67,39 @@ export function TicketList() {
             body: JSON.stringify({ subject }),
         });
 
+        await loadTickets();
+
         // reload tickets
-        const res = await fetch("/api/tickets");
-        const data = await res.json();
-        setTickets(data);
+        // const res = await fetch("/api/tickets");
+        // const data = await res.json();
+        // setTickets(data);
+    }
+
+    async function resolveTicket(id: number) {
+        try {
+            setUpdatingId(id);
+
+            const res = await fetch(`/api/tickets/${id}/status`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status: "Resolved" }),
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error("Status PATCH failed:", errorText);
+                throw new Error("Failed to update ticket");
+            }
+
+            await loadTickets();
+        } catch (error) {
+            console.error(error);
+            alert("Failed to mark ticket as resolved.");
+        } finally {
+            setUpdatingId(null);
+        }
     }
 
     return (
@@ -87,7 +133,7 @@ export function TicketList() {
                 </div>
                 <select
                     value={filter}
-                    onChange={(e) => setFilter(e.target.value as any)}
+                    onChange={(e) => setFilter(e.target.value as "All" | "Open" | "Resolved")}
                     className="flex items-center gap-2 text-sm text-gray-300 border border-gray-700 px-3 py-2 rounded-lg bg-gray-800"
                 >
                     <option value="All">All</option>
@@ -113,6 +159,7 @@ export function TicketList() {
                                 <th className="px-6 py-4 font-semibold">Subject</th>
                                 <th className="px-6 py-4 font-semibold">Status</th>
                                 <th className="px-6 py-4 font-semibold text-right">Date Created</th>
+                                <th className="px-6 py-4 font-semibold text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-800">
@@ -134,6 +181,19 @@ export function TicketList() {
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-400 text-right whitespace-nowrap">
                                         {new Date(ticket.created_at).toLocaleDateString()}
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        {ticket.status === "Open" ? (
+                                            <button
+                                                onClick={() => resolveTicket(ticket.id)}
+                                                disabled={updatingId === ticket.id}
+                                                className="px-3 py-1.5 text-xs font-medium rounded-lg border border-emerald-500/30 text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                {updatingId === ticket.id ? "Updating..." : "Mark Resolved"}
+                                            </button>
+                                        ) : (
+                                            <span className="text-xs text-gray-500">Done</span>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
