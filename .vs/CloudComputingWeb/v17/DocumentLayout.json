@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\route.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-helpdesk\\app\\api\\tickets\\route.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\components\\TicketList.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-helpdesk\\components\\TicketList.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\route_pg.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-helpdesk\\app\\api\\tickets\\route_pg.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-helpdesk\\README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\chat\\route.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-helpdesk\\app\\api\\chat\\route.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
@@ -13,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\components\\Sidebar.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-helpdesk\\components\\Sidebar.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\route.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-helpdesk\\app\\api\\tickets\\route.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\components\\ChatWindow.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
@@ -42,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,7 +62,46 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TicketList.tsx",
+              "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\components\\TicketList.tsx",
+              "RelativeDocumentMoniker": "my-helpdesk\\components\\TicketList.tsx",
+              "ToolTip": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\components\\TicketList.tsx",
+              "RelativeToolTip": "my-helpdesk\\components\\TicketList.tsx",
+              "ViewState": "AQIAAGYAAAAAAAAAAAAowHMAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-03T06:07:13.771Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "route_pg.ts",
+              "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\route_pg.ts",
+              "RelativeDocumentMoniker": "my-helpdesk\\app\\api\\tickets\\route_pg.ts",
+              "ToolTip": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\route_pg.ts",
+              "RelativeToolTip": "my-helpdesk\\app\\api\\tickets\\route_pg.ts",
+              "ViewState": "AQIAACQAAAAAAAAAAAA1wDMAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-03T06:06:39.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\README.md",
+              "RelativeDocumentMoniker": "my-helpdesk\\README.md",
+              "ToolTip": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\README.md",
+              "RelativeToolTip": "my-helpdesk\\README.md",
+              "ViewState": "AQIAABsAAAAAAAAAAAAAADUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-04-03T05:57:52.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "Sidebar.tsx",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\components\\Sidebar.tsx",
               "RelativeDocumentMoniker": "my-helpdesk\\components\\Sidebar.tsx",
@@ -62,7 +113,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "page.tsx",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\page.tsx",
               "RelativeDocumentMoniker": "my-helpdesk\\app\\page.tsx",
@@ -74,7 +125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "page.tsx",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\tickets\\[id]\\page.tsx",
               "RelativeDocumentMoniker": "my-helpdesk\\app\\tickets\\[id]\\page.tsx",
@@ -82,12 +133,11 @@
               "RelativeToolTip": "my-helpdesk\\app\\tickets\\[id]\\page.tsx",
               "ViewState": "AQIAAAwAAAAAAAAAAAAowCAAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-04-01T14:01:02.318Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-01T14:01:02.318Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "ChatWindow.tsx",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\components\\ChatWindow.tsx",
               "RelativeDocumentMoniker": "my-helpdesk\\components\\ChatWindow.tsx",
@@ -99,19 +149,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "route.ts",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\route.ts",
               "RelativeDocumentMoniker": "my-helpdesk\\app\\api\\tickets\\route.ts",
               "ToolTip": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\route.ts",
               "RelativeToolTip": "my-helpdesk\\app\\api\\tickets\\route.ts",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAAABoAAAABAAAA",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAxwB4AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-04-01T13:59:33.868Z"
+              "WhenOpened": "2026-04-01T13:59:33.868Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "route.ts",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\chat\\route.ts",
               "RelativeDocumentMoniker": "my-helpdesk\\app\\api\\chat\\route.ts",
@@ -124,7 +175,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "route.ts",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\app\\api\\tickets\\[id]\\messages\\route.ts",
               "RelativeDocumentMoniker": "my-helpdesk\\app\\api\\tickets\\[id]\\messages\\route.ts",
@@ -136,7 +187,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "schema.prisma",
               "DocumentMoniker": "C:\\Users\\zhuzh\\OneDrive\\Documents\\GitHub\\CloudComputingWeb\\my-helpdesk\\prisma\\schema.prisma",
               "RelativeDocumentMoniker": "my-helpdesk\\prisma\\schema.prisma",

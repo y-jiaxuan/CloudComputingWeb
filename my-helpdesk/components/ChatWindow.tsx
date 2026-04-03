@@ -10,6 +10,12 @@ type MessagePart = {
   text?: string;
 };
 
+type SimpleMessage = {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+};
+
 type Props = {
   ticketId?: number;
   initialMessages?: { role: string; content: string }[];
@@ -19,34 +25,27 @@ export function ChatWindow({ ticketId, initialMessages = [] }: Props) {
   const router = useRouter();
   const bottomRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
-
-  const seedMessages = initialMessages.length > 0
-    ? initialMessages.map((m, i) => ({
-        id: String(i),
-        role: m.role as "user" | "assistant",
-        parts: [{ type: "text" as const, text: m.content }],
-      }))
-    : [
-        {
-          id: "welcome",
-          role: "assistant" as const,
-          parts: [{ type: "text" as const, text: "Hello, I am your AI Help Desk Assistant. How may I assist you today?" }],
-        },
-      ];
+  const [historyMessages, setHistoryMessages] = useState<SimpleMessage[]>(
+    initialMessages.map((m, i) => ({
+      id: String(i),
+      role: m.role as "user" | "assistant",
+      content: m.content,
+    }))
+  );
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
       body: { ticketId },
     }),
-    initialMessages: seedMessages as never,
+    id: ticketId ? String(ticketId) : "new",
   });
 
   const isLoading = status === "submitted" || status === "streaming";
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, historyMessages]);
 
   const handleNewTicket = async () => {
     const res = await fetch("/api/tickets", {
@@ -77,6 +76,30 @@ export function ChatWindow({ ticketId, initialMessages = [] }: Props) {
     setInput("");
   };
 
+  const renderMessage = (role: string, content: string, key: string) => (
+    <div
+      key={key}
+      className={`flex gap-4 ${role === "user" ? "flex-row-reverse" : "flex-row"}`}
+    >
+      <div
+        className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center shadow-sm ${
+          role === "user" ? "bg-indigo-600 text-white" : "bg-emerald-600 text-white"
+        }`}
+      >
+        {role === "user" ? <User size={20} /> : <Bot size={20} />}
+      </div>
+      <div
+        className={`max-w-[75%] px-5 py-3.5 rounded-2xl shadow-sm text-sm leading-relaxed ${
+          role === "user"
+            ? "bg-indigo-600 text-white rounded-tr-sm"
+            : "bg-gray-800 text-gray-200 border border-gray-700 rounded-tl-sm ring-1 ring-gray-900/50"
+        }`}
+      >
+        {content}
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto w-full bg-gray-900 shadow-xl rounded-2xl overflow-hidden my-4 border border-gray-800">
       <div className="bg-indigo-900/50 border-b border-indigo-500/20 p-4 shrink-0 shadow-sm z-10 flex items-center justify-between">
@@ -99,29 +122,20 @@ export function ChatWindow({ ticketId, initialMessages = [] }: Props) {
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-950/50">
-        {messages.map((m: UIMessage) => (
-          <div
-            key={m.id}
-            className={`flex gap-4 ${m.role === "user" ? "flex-row-reverse" : "flex-row"}`}
-          >
-            <div
-              className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center shadow-sm ${
-                m.role === "user" ? "bg-indigo-600 text-white" : "bg-emerald-600 text-white"
-              }`}
-            >
-              {m.role === "user" ? <User size={20} /> : <Bot size={20} />}
-            </div>
-            <div
-              className={`max-w-[75%] px-5 py-3.5 rounded-2xl shadow-sm text-sm leading-relaxed ${
-                m.role === "user"
-                  ? "bg-indigo-600 text-white rounded-tr-sm"
-                  : "bg-gray-800 text-gray-200 border border-gray-700 rounded-tl-sm ring-1 ring-gray-900/50"
-              }`}
-            >
-              {m.parts?.map((p: MessagePart) => (p.type === "text" ? p.text : "")).join("")}
-            </div>
-          </div>
-        ))}
+        {/* Show history messages first */}
+        {historyMessages.length > 0
+          ? historyMessages.map((m) => renderMessage(m.role, m.content, `history-${m.id}`))
+          : messages.length === 0 && renderMessage("assistant", "Hello, I am your AI Help Desk Assistant. How may I assist you today?", "welcome")}
+
+        {/* Show new messages from useChat */}
+        {messages.map((m: UIMessage) =>
+          renderMessage(
+            m.role,
+            m.parts?.map((p: MessagePart) => (p.type === "text" ? p.text : "")).join("") ?? "",
+            `new-${m.id}`
+          )
+        )}
+
         {isLoading && (
           <div className="flex gap-4">
             <div className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-emerald-600 text-white">
