@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { MessageSquare, Ticket, LifeBuoy, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 type TicketData = {
     id: number;
@@ -14,13 +14,14 @@ type TicketData = {
 export function Sidebar() {
     const [tickets, setTickets] = useState<TicketData[]>([]);
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
         fetch("/api/tickets")
             .then((r) => r.json())
             .then((data) => setTickets(Array.isArray(data) ? data : []))
             .catch(() => { });
-    }, []);
+    }, [pathname]);
 
     const handleNew = async () => {
         const res = await fetch("/api/tickets", {
@@ -29,11 +30,12 @@ export function Sidebar() {
             body: JSON.stringify({ subject: "New Conversation" }),
         });
         const ticket = await res.json();
+        setTickets((prev) => [ticket, ...prev]);
         router.push(`/tickets/${ticket.id}`);
     };
 
     return (
-        <aside className="w-64 bg-gray-900 text-gray-100 flex flex-col h-full sticky top-0">
+        <aside className="w-64 bg-gray-900 text-gray-100 flex flex-col h-screen overflow-hidden sticky top-0">
             <div className="p-6 flex items-center gap-3 border-b border-gray-800">
                 <div className="bg-indigo-500 p-2 rounded-lg">
                     <LifeBuoy className="w-6 h-6 text-white" />
@@ -59,7 +61,7 @@ export function Sidebar() {
             </nav>
 
             {/* Recent tickets list */}
-            <div className="flex-1 overflow-y-auto px-4 py-4">
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 recent-scroll">
                 <p className="text-xs uppercase tracking-wider text-gray-500 mb-2 px-1">Recent</p>
                 <div className="space-y-1">
                     {(Array.isArray(tickets) ? tickets : []).slice(0, 20).map((t) => (
