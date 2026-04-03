@@ -33,16 +33,6 @@ export function TicketList() {
         loadTickets();
     }, []);
 
-    // useEffect(() => {
-    //     fetch('/api/tickets')
-    //         .then(r => r.json())
-    //         .then(data => {
-    //             setTickets(data);
-    //             setLoading(false);
-    //         })
-    //         .catch(() => setLoading(false));
-    // }, []);
-
     const filteredTickets = tickets.filter((ticket) => {
         const matchesSearch = ticket.subject
             .toLowerCase()
@@ -52,6 +42,14 @@ export function TicketList() {
             filter === "All" || ticket.status === filter;
 
         return matchesSearch && matchesFilter;
+    })
+    .sort((a, b) => {
+        if (filter === "All") {
+            if (a.status === "Open" && b.status === "Resolved") return -1;
+            if (a.status === "Resolved" && b.status === "Open") return 1;
+        }
+
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
 
     async function createTicket() {
@@ -68,11 +66,7 @@ export function TicketList() {
         });
 
         await loadTickets();
-
-        // reload tickets
-        // const res = await fetch("/api/tickets");
-        // const data = await res.json();
-        // setTickets(data);
+        window.dispatchEvent(new Event("tickets-updated"));
     }
 
     async function resolveTicket(id: number) {
@@ -94,6 +88,8 @@ export function TicketList() {
             }
 
             await loadTickets();
+            window.dispatchEvent(new Event("tickets-updated"));
+
         } catch (error) {
             console.error(error);
             alert("Failed to mark ticket as resolved.");
@@ -142,7 +138,7 @@ export function TicketList() {
                 </select>
             </div>
             {/* Ticket Table */}
-            <div className="flex-1 overflow-x-auto">
+            <div className="flex-1 overflow-x-auto recent-scroll">
                 {loading ? (
                     <div className="flex items-center justify-center h-40 text-gray-400 text-sm">
                         Loading tickets...

@@ -16,11 +16,28 @@ export function Sidebar() {
     const router = useRouter();
     const pathname = usePathname();
 
+    async function loadTickets() {
+        try {
+            const res = await fetch("/api/tickets");
+            const data = await res.json();
+            setTickets(Array.isArray(data) ? data : []);
+        } catch {
+            setTickets([]);
+        }
+    }
+
     useEffect(() => {
-        fetch("/api/tickets")
-            .then((r) => r.json())
-            .then((data) => setTickets(Array.isArray(data) ? data : []))
-            .catch(() => { });
+        loadTickets();
+
+        const handleTicketsUpdated = () => {
+            loadTickets();
+        };
+
+        window.addEventListener("tickets-updated", handleTicketsUpdated);
+
+        return () => {
+            window.removeEventListener("tickets-updated", handleTicketsUpdated);
+        };
     }, [pathname]);
 
     const handleNew = async () => {
@@ -31,6 +48,7 @@ export function Sidebar() {
         });
         const ticket = await res.json();
         setTickets((prev) => [ticket, ...prev]);
+        window.dispatchEvent(new Event("tickets-updated"));
         router.push(`/tickets/${ticket.id}`);
     };
 
@@ -64,7 +82,10 @@ export function Sidebar() {
             <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 recent-scroll">
                 <p className="text-xs uppercase tracking-wider text-gray-500 mb-2 px-1">Recent</p>
                 <div className="space-y-1">
-                    {(Array.isArray(tickets) ? tickets : []).slice(0, 20).map((t) => (
+                    {tickets
+                        .filter((t) => t.status === "Open")
+                        .slice(0, 20)
+                        .map((t) => (
                         <Link
                             key={t.id}
                             href={`/tickets/${t.id}`}
