@@ -6,6 +6,7 @@ frontend:
         - cd my-helpdesk && npm install
     build:
       commands:
+        - cd my-helpdesk && npx prisma generate
         - cd my-helpdesk && npm run build
   artifacts:
     baseDirectory: my-helpdesk/.next
