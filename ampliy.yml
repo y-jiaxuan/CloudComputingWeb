@@ -1,23 +1,16 @@
 version: 1
-# This is the secret sauce: it sets the working directory for all phases
-appRoot: my-helpdesk 
-
 frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - cd my-helpdesk && npm install
     build:
       commands:
-        # Prisma generate is already handled by postinstall, 
-        # but we keep it here just to be safe.
-        - npx prisma generate
-        - npm run build
+        - cd my-helpdesk && npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: my-helpdesk/.next
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
-      - .next/cache/**/*
+      - my-helpdesk/node_modules/**/*
