@@ -1,6 +1,5 @@
 version: 1
 appRoot: my-helpdesk 
-
 frontend:
   phases:
     preBuild:
@@ -10,9 +9,12 @@ frontend:
       commands:
         - npx prisma generate
         - npm run build
+        # Next.js standalone needs these moved inside to be 'self-contained'
+        - mkdir -p .next/standalone/my-helpdesk/.next
+        - cp -r .next/static .next/standalone/my-helpdesk/.next/static
+        - cp -r public .next/standalone/my-helpdesk/public
   artifacts:
-    # This is the change: 'standalone' is required for Next.js SSR on Amplify
-    baseDirectory: .next/standalone
+    baseDirectory: .next/standalone/my-helpdesk
     files:
       - '**/*'
   cache:
