@@ -1,17 +1,23 @@
 version: 1
+# This is the secret sauce: it sets the working directory for all phases
+appRoot: my-helpdesk 
+
 frontend:
   phases:
     preBuild:
       commands:
-        - cd my-helpdesk && npm install
+        - npm install
     build:
       commands:
-        - cd my-helpdesk && npx prisma generate
-        - cd my-helpdesk && npm run build
+        # Prisma generate is already handled by postinstall, 
+        # but we keep it here just to be safe.
+        - npx prisma generate
+        - npm run build
   artifacts:
-    baseDirectory: my-helpdesk/.next # Or 'my-helpdesk/.next/standalone' depending on Amplify's detection
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
     paths:
-      - my-helpdesk/node_modules/**/*
+      - node_modules/**/*
+      - .next/cache/**/*
