@@ -15,3 +15,7 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
+  framework:
+    name: nextjs
+    config:
+      ssr: true
