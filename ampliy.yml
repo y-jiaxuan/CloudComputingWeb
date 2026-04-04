@@ -1,17 +1,16 @@
 version: 1
-appRoot: my-helpdesk
 frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - cd my-helpdesk && npm install
     build:
       commands:
-        - npm run build
+        - cd my-helpdesk && npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: my-helpdesk/.next
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
+      - my-helpdesk/node_modules/**/*
