@@ -9,11 +9,12 @@ frontend:
       commands:
         - npx prisma generate
         - npm run build
-        # Next.js standalone needs these moved inside to be 'self-contained'
-        - mkdir -p .next/standalone/my-helpdesk/.next
+        # IMPORTANT: Next.js standalone doesn't include static files by default.
+        # We must copy them into the standalone folder so the UI loads.
         - cp -r .next/static .next/standalone/my-helpdesk/.next/static
         - cp -r public .next/standalone/my-helpdesk/public
   artifacts:
+    # We point to the inner folder created by the 'standalone' build
     baseDirectory: .next/standalone/my-helpdesk
     files:
       - '**/*'
