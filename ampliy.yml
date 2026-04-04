@@ -9,14 +9,17 @@ frontend:
       commands:
         - npx prisma generate
         - npm run build
-        # This creates the necessary nested folders if they don't exist
+        # 1. Create the internal static/public folders Next.js expects
         - mkdir -p .next/standalone/my-helpdesk/.next/static
         - mkdir -p .next/standalone/my-helpdesk/public
-        # Now copy the files into the guaranteed paths
+        # 2. Copy static assets into the nested path
         - cp -r .next/static/. .next/standalone/my-helpdesk/.next/static/
         - cp -r public/. .next/standalone/my-helpdesk/public/
+        # 3. Move everything FROM the subfolder UP to the standalone root
+        # This puts server.js where Amplify can actually see it
+        - cp -r .next/standalone/my-helpdesk/. .next/standalone/
   artifacts:
-    baseDirectory: .next/standalone/my-helpdesk
+    baseDirectory: .next/standalone
     files:
       - '**/*'
   cache:
