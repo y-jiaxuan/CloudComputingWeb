@@ -1,5 +1,4 @@
 version: 1
-appRoot: my-helpdesk 
 frontend:
   phases:
     preBuild:
@@ -9,17 +8,8 @@ frontend:
       commands:
         - npx prisma generate
         - npm run build
-        # 1. Create the internal static/public folders Next.js expects
-        - mkdir -p .next/standalone/my-helpdesk/.next/static
-        - mkdir -p .next/standalone/my-helpdesk/public
-        # 2. Copy static assets into the nested path
-        - cp -r .next/static/. .next/standalone/my-helpdesk/.next/static/
-        - cp -r public/. .next/standalone/my-helpdesk/public/
-        # 3. Move everything FROM the subfolder UP to the standalone root
-        # This puts server.js where Amplify can actually see it
-        - cp -r .next/standalone/my-helpdesk/. .next/standalone/
   artifacts:
-    baseDirectory: .next/standalone
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
