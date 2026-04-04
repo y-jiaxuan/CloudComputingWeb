@@ -9,12 +9,13 @@ frontend:
       commands:
         - npx prisma generate
         - npm run build
-        # IMPORTANT: Next.js standalone doesn't include static files by default.
-        # We must copy them into the standalone folder so the UI loads.
-        - cp -r .next/static .next/standalone/my-helpdesk/.next/static
-        - cp -r public .next/standalone/my-helpdesk/public
+        # This creates the necessary nested folders if they don't exist
+        - mkdir -p .next/standalone/my-helpdesk/.next/static
+        - mkdir -p .next/standalone/my-helpdesk/public
+        # Now copy the files into the guaranteed paths
+        - cp -r .next/static/. .next/standalone/my-helpdesk/.next/static/
+        - cp -r public/. .next/standalone/my-helpdesk/public/
   artifacts:
-    # We point to the inner folder created by the 'standalone' build
     baseDirectory: .next/standalone/my-helpdesk
     files:
       - '**/*'
