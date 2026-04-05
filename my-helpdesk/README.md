@@ -11,8 +11,9 @@
   - [AI Chat Assistant](#ai-chat-assistant)
   - [API Route - Chat Endpoint](#api-route--chat-endpoint)
   - [Ticket Management View](#ticket-management-view)
-  - [Sidebar Navigation](#sidebar-navigation)
-  - [Root Layout](#root-layout)
+- [Sidebar Navigation](#sidebar-navigation)
+- [Root Layout](#root-layout)
+- [Deployment](#deployment)
 
 ---
 
@@ -23,8 +24,8 @@ Ensure the following are installed and configured before running the project loc
 | Requirement                    | Version | Notes                                                                      |
 |--------------------------------|---------|----------------------------------------------------------------------------|
 | [Node.js](https://nodejs.org/) | v18.17+ | LTS recommended                                                            |
-| OpenAI API Key                 | -       | Located in the .env and .env.local                                         |
-| DATABASE URL                   | -       | Located in the .env and .env.local                                         |
+| `OPENAI_API_KEY`               | -       | Required for AI Chat (stored in `.env.local`)                              |
+| `DATABASE_URL`                 | -       | AWS RDS (PostgreSQL) connection string (stored in `.env.local`)            |
 
 ---
 
@@ -36,7 +37,8 @@ Go to the project root and execute:
 
 ```bash
 npm install
-npx prisma generate (This line should automatically execute after npm install)
+npx prisma generate  # Runs automatically post-install
+npx prisma db push   # Sync local schema with database
 ```
 
 ### 2. Configure environment variables
@@ -101,14 +103,14 @@ A Next.js App Router API Route that handles all AI inference. This is the backen
 
 **File:** [`components/TicketList.tsx`](components/TicketList.tsx)
 
-A UI component that displays a table of support tickets. Currently uses mock data and is intended to be wired up to a real database.
+A UI component that displays a table of support tickets. Fully integrated with **AWS RDS (PostgreSQL)** via **Prisma ORM**.
 
 **Key features:**
-- Displays ticket ID, subject, status badge (`Open` / `Resolved`), and date created.
-- Status badges use conditional colour coding.
-- Includes a search input and a filter button.
-- A "New Ticket" button is present in the header.
-- Connected to AWS RDS (PostgreSQL) via an ORM [Prisma](https://www.prisma.io/)
+- **Real-time CRUD**: Connects to `/api/tickets` for fetching, creating, and updating tickets.
+- **Status Management**: Support for `Open` and `Resolved` states with conditional color-coding.
+- **Context Menu Interaction**: Right-click any ticket row to permanently delete it from the system.
+- **Search & Filtering**: Real-time client-side search and status-based filtering.
+- **Ticket IDs**: Automated ticket ID generation (e.g., `TKT-123`) using PostgreSQL autoincrement.
 
 ---
 
@@ -136,3 +138,15 @@ Defines the persistent shell of the application, rendered once and shared across
 - Dark background (`bg-gray-950`) applied at the body level for night mode aesthetics.
 
 ---
+
+## Deployment
+
+### Vercel
+
+The project has been deployed on [Vercel](https://team13-cloud-computing-proj.vercel.app/).
+
+**Configuration Notes:**
+- **Database Connection**: Ensure the `DATABASE_URL` is configured in Vercel's Environment Variables.
+- **AI Integration**: Ensure the `OPENAI_API_KEY` is configured.
+- **Serverless Compatibility**: The Prisma configuration uses `previewFeatures = ["driverAdapters"]` and `rhel-openssl-3.0.x` as a binary target for compatibility with Vercel's RHEL-based serverless environments.
+- **Max Duration**: API routes are configured with `maxDuration = 30` to support streaming AI responses.
