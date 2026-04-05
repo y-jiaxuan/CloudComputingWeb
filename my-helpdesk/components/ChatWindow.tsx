@@ -41,7 +41,18 @@ export function ChatWindow({ ticketId, initialMessages = [] }: Props) {
     id: ticketId ? String(ticketId) : "new",
   });
 
-  const isLoading = status === "submitted" || status === "streaming";
+  const [isCreating, setIsCreating] = useState(false);
+  const isLoading = status === "submitted" || status === "streaming" || isCreating;
+
+  useEffect(() => {
+    if (ticketId) {
+      const pendingPrompt = sessionStorage.getItem("pendingPrompt");
+      if (pendingPrompt) {
+        sessionStorage.removeItem("pendingPrompt");
+        sendMessage({ text: pendingPrompt });
+      }
+    }
+  }, [ticketId, sendMessage]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -62,6 +73,8 @@ export function ChatWindow({ ticketId, initialMessages = [] }: Props) {
     if (!input.trim() || isLoading) return;
 
     if (!ticketId) {
+      setIsCreating(true);
+      sessionStorage.setItem("pendingPrompt", input);
       const res = await fetch("/api/tickets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
