@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function PATCH(
-  req: Request,
+export async function DELETE(
+  _req: Request,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -16,28 +16,21 @@ export async function PATCH(
       );
     }
 
-    const { status } = await req.json();
-
-    if (!status || !["Open", "Resolved"].includes(status)) {
-      return NextResponse.json(
-        { error: "Invalid status" },
-        { status: 400 }
-      );
-    }
-
-    const updatedTicket = await prisma.ticket.update({
-      where: { id: ticketId },
-      data: { status },
+    // Delete messages first (foreign key constraint)
+    await prisma.message.deleteMany({
+      where: { ticket_id: ticketId },
     });
 
-    return NextResponse.json(updatedTicket);
+    await prisma.ticket.delete({
+      where: { id: ticketId },
+    });
+
+    return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Ticket status PATCH error:", err);
+    console.error("Ticket DELETE error:", err);
     return NextResponse.json(
-      { error: "Failed to update ticket status" },
+      { error: "Failed to delete ticket" },
       { status: 500 }
     );
   }
 }
-
-

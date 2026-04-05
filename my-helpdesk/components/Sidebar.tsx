@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { MessageSquare, Ticket, LifeBuoy, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { MessageSquare, Ticket, LifeBuoy, Plus, Trash2 } from "lucide-react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 type TicketData = {
@@ -11,8 +11,16 @@ type TicketData = {
     created_at: string;
 };
 
+type ContextMenu = {
+    ticketId: number;
+    x: number;
+    y: number;
+};
+
 export function Sidebar() {
     const [tickets, setTickets] = useState<TicketData[]>([]);
+    const [contextMenu, setContextMenu] = useState<ContextMenu | null>(null);
+    const contextMenuRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -29,16 +37,21 @@ export function Sidebar() {
     useEffect(() => {
         loadTickets();
 
-        const handleTicketsUpdated = () => {
-            loadTickets();
-        };
-
+        const handleTicketsUpdated = () => loadTickets();
         window.addEventListener("tickets-updated", handleTicketsUpdated);
-
-        return () => {
-            window.removeEventListener("tickets-updated", handleTicketsUpdated);
-        };
+        return () => window.removeEventListener("tickets-updated", handleTicketsUpdated);
     }, [pathname]);
+
+    // Close context menu on outside click or scroll
+    useEffect(() => {
+        const handleClose = () => setContextMenu(null);
+        document.addEventListener("click", handleClose);
+        document.addEventListener("scroll", handleClose, true);
+        return () => {
+            document.removeEventListener("click", handleClose);
+            document.removeEventListener("scroll", handleClose, true);
+        };
+    }, []);
 
     const handleNew = async () => {
         const res = await fetch("/api/tickets", {
@@ -50,6 +63,30 @@ export function Sidebar() {
         setTickets((prev) => [ticket, ...prev]);
         window.dispatchEvent(new Event("tickets-updated"));
         router.push(`/tickets/${ticket.id}`);
+    };
+
+    const handleRightClick = useCallback((e: React.MouseEvent, ticketId: number) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setContextMenu({ ticketId, x: e.clientX, y: e.clientY });
+    }, []);
+
+    const handleDelete = async (ticketId: number) => {
+        setContextMenu(null);
+        try {
+            const res = await fetch(`/api/tickets/${ticketId}`, { method: "DELETE" });
+            if (!res.ok) throw new Error("Delete failed");
+
+            setTickets((prev) => prev.filter((t) => t.id !== ticketId));
+            window.dispatchEvent(new Event("tickets-updated"));
+
+            // If currently viewing the deleted ticket, go home
+            if (pathname === `/tickets/${ticketId}`) {
+                router.push("/");
+            }
+        } catch {
+            alert("Failed to delete ticket.");
+        }
     };
 
     return (
@@ -89,7 +126,8 @@ export function Sidebar() {
                         <Link
                             key={t.id}
                             href={`/tickets/${t.id}`}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors text-gray-400 hover:text-white text-sm truncate"
+                            onContextMenu={(e) => handleRightClick(e, t.id)}
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors text-gray-400 hover:text-white text-sm truncate select-none"
                         >
                             <MessageSquare className="w-4 h-4 shrink-0" />
                             <span className="truncate">{t.subject}</span>
@@ -97,6 +135,24 @@ export function Sidebar() {
                     ))}
                 </div>
             </div>
+
+            {/* Context Menu */}
+            {contextMenu && (
+                <div
+                    ref={contextMenuRef}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ top: contextMenu.y, left: contextMenu.x }}
+                    className="fixed z-50 bg-gray-800 border border-gray-700 rounded-lg shadow-xl py-1 min-w-[140px]"
+                >
+                    <button
+                        onClick={() => handleDelete(contextMenu.ticketId)}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 transition-colors"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                        Delete ticket
+                    </button>
+                </div>
+            )}
         </aside>
     );
 }
